@@ -11,17 +11,11 @@ startCommand:
       linearApiKey:
         type: string
         description: Your Linear API key. Required for Linear API access.
-      logLevel:
-        type: string
-        description: Log level (debug, info, warn, error)
-        enum: ['debug', 'info', 'warn', 'error']
-        default: 'info'
   commandFunction: |
     (config) => ({
       command: 'node',
       args: ['dist/index.js'],
       env: {
-        LINEAR_API_KEY: config.linearApiKey,
-        LOG_LEVEL: config.logLevel || 'info'
+        LINEAR_API_KEY: config.linearApiKey
       }
     })
