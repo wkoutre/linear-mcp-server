@@ -87,28 +87,17 @@ Alternatively, manually edit the config file:
 6. Restart Claude Desktop (quit completely and reopen)
 7. You should now see Linear MCP Server available as a tool in Claude
 
-## MCP Resources and Tools
+## Available Tools
 
-This MCP server provides the following:
+The Linear MCP Server provides a comprehensive set of tools to interact with the Linear API. For a detailed list of all implemented tools and planned future additions, see the [TOOLS.md](./TOOLS.md) document.
 
-### Resources
+Some key tools include:
 
-- `linear://user-info` - Current user information
-- `linear://teams` - All teams
-- `linear://projects` - All projects
-- `linear://projects/team/{teamId}` - Projects filtered by team
-- `linear://issues` - All issues
-- `linear://issues/filtered` - Issues with filters (via query parameters)
-
-### Tools
-
-- `createIssue` - Create a new issue
-- `updateIssue` - Update an existing issue
-- `changeIssueStatus` - Change an issue's status
-- `assignIssue` - Assign an issue to a user
-- `addComment` - Add a comment to an issue
-- `createProject` - Create a new project
-- `createTeam` - Create a new team
+- Get information about users, teams, projects, and issues
+- Create and update issues
+- Search for issues with filters
+- Create and manage projects
+- Add comments to issues
 
 ## Example Claude Prompts
 
@@ -135,6 +124,14 @@ npm install
 # Run in development mode
 npm run dev -- --token YOUR_LINEAR_API_TOKEN
 ```
+
+### Extending the Server
+
+To add new tools to the server:
+
+1. Follow the implementation guide in the [TOOLS.md](./TOOLS.md) document
+2. Make sure to follow the established code structure in the `src/` directory
+3. Update the documentation to reflect your changes
 
 ## Contributing
 
