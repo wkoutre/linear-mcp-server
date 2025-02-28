@@ -345,4 +345,71 @@ export class LinearService {
       throw new Error("Failed to create project");
     }
   }
+  
+  /**
+   * Adds a label to an issue
+   * @param issueId The ID or identifier of the issue
+   * @param labelId The ID of the label to add
+   * @returns Success status and IDs
+   */
+  async addIssueLabel(issueId: string, labelId: string) {
+    // Get the issue
+    const issue = await this.client.issue(issueId);
+    
+    if (!issue) {
+      throw new Error(`Issue not found: ${issueId}`);
+    }
+    
+    // Get the current labels
+    const currentLabels = await issue.labels();
+    const currentLabelIds = currentLabels.nodes.map(label => label.id);
+    
+    // Add the new label ID if it's not already present
+    if (!currentLabelIds.includes(labelId)) {
+      await issue.update({
+        labelIds: [...currentLabelIds, labelId]
+      });
+    }
+    
+    return {
+      success: true,
+      issueId: issue.id,
+      labelId
+    };
+  }
+  
+  /**
+   * Removes a label from an issue
+   * @param issueId The ID or identifier of the issue
+   * @param labelId The ID of the label to remove
+   * @returns Success status and IDs
+   */
+  async removeIssueLabel(issueId: string, labelId: string) {
+    // Get the issue
+    const issue = await this.client.issue(issueId);
+    
+    if (!issue) {
+      throw new Error(`Issue not found: ${issueId}`);
+    }
+    
+    // Get the current labels
+    const currentLabels = await issue.labels();
+    const currentLabelIds = currentLabels.nodes.map(label => label.id);
+    
+    // Filter out the label ID to remove
+    const updatedLabelIds = currentLabelIds.filter(id => id !== labelId);
+    
+    // Only update if the label was actually present
+    if (currentLabelIds.length !== updatedLabelIds.length) {
+      await issue.update({
+        labelIds: updatedLabelIds
+      });
+    }
+    
+    return {
+      success: true,
+      issueId: issue.id,
+      labelId
+    };
+  }
 } 

@@ -30,14 +30,16 @@ The following tools are currently implemented and available in the Linear MCP Se
 
 ### Issue Tools
 
-| Tool Name              | Description                                              | Status         |
-| ---------------------- | -------------------------------------------------------- | -------------- |
-| `linear_getIssues`     | Get a list of recent issues from Linear                  | ✅ Implemented |
-| `linear_getIssueById`  | Get a specific issue by ID or identifier (e.g., ABC-123) | ✅ Implemented |
-| `linear_searchIssues`  | Search for issues with various filters                   | ✅ Implemented |
-| `linear_createIssue`   | Create a new issue in Linear                             | ✅ Implemented |
-| `linear_updateIssue`   | Update an existing issue in Linear                       | ✅ Implemented |
-| `linear_createComment` | Add a comment to an issue in Linear                      | ✅ Implemented |
+| Tool Name                 | Description                                              | Status         |
+| ------------------------- | -------------------------------------------------------- | -------------- |
+| `linear_getIssues`        | Get a list of recent issues from Linear                  | ✅ Implemented |
+| `linear_getIssueById`     | Get a specific issue by ID or identifier (e.g., ABC-123) | ✅ Implemented |
+| `linear_searchIssues`     | Search for issues with various filters                   | ✅ Implemented |
+| `linear_createIssue`      | Create a new issue in Linear                             | ✅ Implemented |
+| `linear_updateIssue`      | Update an existing issue in Linear                       | ✅ Implemented |
+| `linear_createComment`    | Add a comment to an issue in Linear                      | ✅ Implemented |
+| `linear_addIssueLabel`    | Add a label to an issue                                  | ✅ Implemented |
+| `linear_removeIssueLabel` | Remove a label from an issue                             | ✅ Implemented |
 
 ## Recommended Future Tools
 
@@ -47,8 +49,6 @@ The following tools are recommended for future implementation to enhance the cap
 
 | Tool Name                      | Description                                                   | Priority | Status     |
 | ------------------------------ | ------------------------------------------------------------- | -------- | ---------- |
-| `linear_addIssueLabel`         | Add a label to an issue                                       | High     | 📝 Planned |
-| `linear_removeIssueLabel`      | Remove a label from an issue                                  | Medium   | 📝 Planned |
 | `linear_assignIssue`           | Assign an issue to a user                                     | High     | 📝 Planned |
 | `linear_subscribeToIssue`      | Subscribe to issue updates                                    | Low      | 📝 Planned |
 | `linear_convertIssueToSubtask` | Convert an issue to a subtask                                 | Medium   | 📝 Planned |

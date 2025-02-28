@@ -5,7 +5,9 @@ import {
   handleSearchIssues,
   handleCreateIssue,
   handleUpdateIssue,
-  handleCreateComment
+  handleCreateComment,
+  handleAddIssueLabel,
+  handleRemoveIssueLabel
 } from "./issue-handlers.js";
 import {
   handleGetProjects,
@@ -45,7 +47,9 @@ export function registerToolHandlers(linearService: LinearService) {
     linear_searchIssues: handleSearchIssues(linearService),
     linear_createIssue: handleCreateIssue(linearService),
     linear_updateIssue: handleUpdateIssue(linearService),
-    linear_createComment: handleCreateComment(linearService)
+    linear_createComment: handleCreateComment(linearService),
+    linear_addIssueLabel: handleAddIssueLabel(linearService),
+    linear_removeIssueLabel: handleRemoveIssueLabel(linearService)
   };
 }
 
@@ -57,6 +61,8 @@ export {
   handleCreateIssue,
   handleUpdateIssue,
   handleCreateComment,
+  handleAddIssueLabel,
+  handleRemoveIssueLabel,
   handleGetProjects,
   handleCreateProject,
   handleGetTeams,

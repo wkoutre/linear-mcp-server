@@ -119,4 +119,38 @@ export function isCreateProjectArgs(args: unknown): args is {
     "teamIds" in args &&
     Array.isArray((args as { teamIds: string[] }).teamIds)
   );
+}
+
+/**
+ * Type guard for linear_addIssueLabel tool arguments
+ */
+export function isAddIssueLabelArgs(args: unknown): args is {
+  issueId: string;
+  labelId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    "labelId" in args &&
+    typeof (args as { labelId: string }).labelId === "string"
+  );
+}
+
+/**
+ * Type guard for linear_removeIssueLabel tool arguments
+ */
+export function isRemoveIssueLabelArgs(args: unknown): args is {
+  issueId: string;
+  labelId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    "labelId" in args &&
+    typeof (args as { labelId: string }).labelId === "string"
+  );
 } 

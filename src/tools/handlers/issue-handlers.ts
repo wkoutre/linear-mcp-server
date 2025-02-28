@@ -1,4 +1,4 @@
-import { isCreateCommentArgs, isCreateIssueArgs, isGetIssueByIdArgs, isGetIssuesArgs, isSearchIssuesArgs, isUpdateIssueArgs } from "../type-guards.js";
+import { isAddIssueLabelArgs, isCreateCommentArgs, isCreateIssueArgs, isGetIssueByIdArgs, isGetIssuesArgs, isRemoveIssueLabelArgs, isSearchIssuesArgs, isUpdateIssueArgs } from "../type-guards.js";
 import { LinearService } from "../../services/linear-service.js";
 import { logError } from "../../utils/config.js";
 
@@ -105,6 +105,42 @@ export function handleCreateComment(linearService: LinearService) {
       return await linearService.createComment(args);
     } catch (error) {
       logError("Error creating comment", error);
+      throw error;
+    }
+  };
+}
+
+/**
+ * Handler for adding a label to an issue
+ */
+export function handleAddIssueLabel(linearService: LinearService) {
+  return async (args: unknown) => {
+    try {
+      if (!isAddIssueLabelArgs(args)) {
+        throw new Error("Invalid arguments for addIssueLabel");
+      }
+      
+      return await linearService.addIssueLabel(args.issueId, args.labelId);
+    } catch (error) {
+      logError("Error adding label to issue", error);
+      throw error;
+    }
+  };
+}
+
+/**
+ * Handler for removing a label from an issue
+ */
+export function handleRemoveIssueLabel(linearService: LinearService) {
+  return async (args: unknown) => {
+    try {
+      if (!isRemoveIssueLabelArgs(args)) {
+        throw new Error("Invalid arguments for removeIssueLabel");
+      }
+      
+      return await linearService.removeIssueLabel(args.issueId, args.labelId);
+    } catch (error) {
+      logError("Error removing label from issue", error);
       throw error;
     }
   };

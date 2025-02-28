@@ -5,7 +5,9 @@ import {
   searchIssuesToolDefinition,
   createIssueToolDefinition,
   updateIssueToolDefinition,
-  createCommentToolDefinition
+  createCommentToolDefinition,
+  addIssueLabelToolDefinition,
+  removeIssueLabelToolDefinition
 } from "./issue-tools.js";
 import {
   getProjectsToolDefinition,
@@ -40,7 +42,9 @@ export const allToolDefinitions: MCPToolDefinition[] = [
   searchIssuesToolDefinition,
   createIssueToolDefinition,
   updateIssueToolDefinition,
-  createCommentToolDefinition
+  createCommentToolDefinition,
+  addIssueLabelToolDefinition,
+  removeIssueLabelToolDefinition
 ];
 
 // Export all tool definitions individually
@@ -51,6 +55,8 @@ export {
   createIssueToolDefinition,
   updateIssueToolDefinition,
   createCommentToolDefinition,
+  addIssueLabelToolDefinition,
+  removeIssueLabelToolDefinition,
   getProjectsToolDefinition,
   createProjectToolDefinition,
   getTeamsToolDefinition,

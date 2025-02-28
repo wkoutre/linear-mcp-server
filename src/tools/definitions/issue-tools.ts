@@ -249,4 +249,64 @@ export const createCommentToolDefinition: MCPToolDefinition = {
       url: { type: "string" }
     }
   }
+};
+
+/**
+ * Tool definition for adding a label to an issue
+ */
+export const addIssueLabelToolDefinition: MCPToolDefinition = {
+  name: "linear_addIssueLabel",
+  description: "Add a label to an issue in Linear",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue to add the label to (e.g., ABC-123)",
+      },
+      labelId: {
+        type: "string",
+        description: "ID of the label to add to the issue",
+      },
+    },
+    required: ["issueId", "labelId"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      issueId: { type: "string" },
+      labelId: { type: "string" }
+    }
+  }
+};
+
+/**
+ * Tool definition for removing a label from an issue
+ */
+export const removeIssueLabelToolDefinition: MCPToolDefinition = {
+  name: "linear_removeIssueLabel",
+  description: "Remove a label from an issue in Linear",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue to remove the label from (e.g., ABC-123)",
+      },
+      labelId: {
+        type: "string",
+        description: "ID of the label to remove from the issue",
+      },
+    },
+    required: ["issueId", "labelId"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      issueId: { type: "string" },
+      labelId: { type: "string" }
+    }
+  }
 }; 
