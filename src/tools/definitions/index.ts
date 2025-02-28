@@ -7,7 +7,17 @@ import {
   updateIssueToolDefinition,
   createCommentToolDefinition,
   addIssueLabelToolDefinition,
-  removeIssueLabelToolDefinition
+  removeIssueLabelToolDefinition,
+  // New Issue Management tools
+  assignIssueToolDefinition,
+  subscribeToIssueToolDefinition,
+  convertIssueToSubtaskToolDefinition,
+  createIssueRelationToolDefinition,
+  archiveIssueToolDefinition,
+  setIssuePriorityToolDefinition,
+  transferIssueToolDefinition,
+  duplicateIssueToolDefinition,
+  getIssueHistoryToolDefinition
 } from "./issue-tools.js";
 import {
   getProjectsToolDefinition,
@@ -44,7 +54,18 @@ export const allToolDefinitions: MCPToolDefinition[] = [
   updateIssueToolDefinition,
   createCommentToolDefinition,
   addIssueLabelToolDefinition,
-  removeIssueLabelToolDefinition
+  removeIssueLabelToolDefinition,
+  
+  // New Issue Management tools
+  assignIssueToolDefinition,
+  subscribeToIssueToolDefinition,
+  convertIssueToSubtaskToolDefinition,
+  createIssueRelationToolDefinition,
+  archiveIssueToolDefinition,
+  setIssuePriorityToolDefinition,
+  transferIssueToolDefinition,
+  duplicateIssueToolDefinition,
+  getIssueHistoryToolDefinition
 ];
 
 // Export all tool definitions individually
@@ -63,5 +84,16 @@ export {
   getViewerToolDefinition,
   getOrganizationToolDefinition,
   getUsersToolDefinition,
-  getLabelsToolDefinition
+  getLabelsToolDefinition,
+  
+  // New Issue Management tools
+  assignIssueToolDefinition,
+  subscribeToIssueToolDefinition,
+  convertIssueToSubtaskToolDefinition,
+  createIssueRelationToolDefinition,
+  archiveIssueToolDefinition,
+  setIssuePriorityToolDefinition,
+  transferIssueToolDefinition,
+  duplicateIssueToolDefinition,
+  getIssueHistoryToolDefinition
 }; 

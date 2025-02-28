@@ -7,7 +7,17 @@ import {
   handleUpdateIssue,
   handleCreateComment,
   handleAddIssueLabel,
-  handleRemoveIssueLabel
+  handleRemoveIssueLabel,
+  // New Issue Management handlers
+  handleAssignIssue,
+  handleSubscribeToIssue,
+  handleConvertIssueToSubtask,
+  handleCreateIssueRelation,
+  handleArchiveIssue,
+  handleSetIssuePriority,
+  handleTransferIssue,
+  handleDuplicateIssue,
+  handleGetIssueHistory
 } from "./issue-handlers.js";
 import {
   handleGetProjects,
@@ -49,7 +59,18 @@ export function registerToolHandlers(linearService: LinearService) {
     linear_updateIssue: handleUpdateIssue(linearService),
     linear_createComment: handleCreateComment(linearService),
     linear_addIssueLabel: handleAddIssueLabel(linearService),
-    linear_removeIssueLabel: handleRemoveIssueLabel(linearService)
+    linear_removeIssueLabel: handleRemoveIssueLabel(linearService),
+    
+    // New Issue Management tools
+    linear_assignIssue: handleAssignIssue(linearService),
+    linear_subscribeToIssue: handleSubscribeToIssue(linearService),
+    linear_convertIssueToSubtask: handleConvertIssueToSubtask(linearService),
+    linear_createIssueRelation: handleCreateIssueRelation(linearService),
+    linear_archiveIssue: handleArchiveIssue(linearService),
+    linear_setIssuePriority: handleSetIssuePriority(linearService),
+    linear_transferIssue: handleTransferIssue(linearService),
+    linear_duplicateIssue: handleDuplicateIssue(linearService),
+    linear_getIssueHistory: handleGetIssueHistory(linearService)
   };
 }
 
@@ -69,5 +90,16 @@ export {
   handleGetViewer,
   handleGetOrganization,
   handleGetUsers,
-  handleGetLabels
+  handleGetLabels,
+  
+  // New Issue Management handlers
+  handleAssignIssue,
+  handleSubscribeToIssue,
+  handleConvertIssueToSubtask,
+  handleCreateIssueRelation,
+  handleArchiveIssue,
+  handleSetIssuePriority,
+  handleTransferIssue,
+  handleDuplicateIssue,
+  handleGetIssueHistory
 }; 

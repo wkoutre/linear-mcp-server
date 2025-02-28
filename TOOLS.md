@@ -47,17 +47,17 @@ The following tools are recommended for future implementation to enhance the cap
 
 ### Issue Management
 
-| Tool Name                      | Description                                                   | Priority | Status     |
-| ------------------------------ | ------------------------------------------------------------- | -------- | ---------- |
-| `linear_assignIssue`           | Assign an issue to a user                                     | High     | 📝 Planned |
-| `linear_subscribeToIssue`      | Subscribe to issue updates                                    | Low      | 📝 Planned |
-| `linear_convertIssueToSubtask` | Convert an issue to a subtask                                 | Medium   | 📝 Planned |
-| `linear_createIssueRelation`   | Create relations between issues (blocks, is blocked by, etc.) | High     | 📝 Planned |
-| `linear_archiveIssue`          | Archive an issue                                              | Medium   | 📝 Planned |
-| `linear_setIssuePriority`      | Set the priority of an issue                                  | High     | 📝 Planned |
-| `linear_transferIssue`         | Transfer an issue to another team                             | Medium   | 📝 Planned |
-| `linear_duplicateIssue`        | Duplicate an issue                                            | Medium   | 📝 Planned |
-| `linear_getIssueHistory`       | Get the history of changes made to an issue                   | Medium   | 📝 Planned |
+| Tool Name                      | Description                                                   | Priority | Status         |
+| ------------------------------ | ------------------------------------------------------------- | -------- | -------------- |
+| `linear_assignIssue`           | Assign an issue to a user                                     | High     | ✅ Implemented |
+| `linear_subscribeToIssue`      | Subscribe to issue updates                                    | Low      | 🔄 In Progress |
+| `linear_convertIssueToSubtask` | Convert an issue to a subtask                                 | Medium   | ✅ Implemented |
+| `linear_createIssueRelation`   | Create relations between issues (blocks, is blocked by, etc.) | High     | 🔄 In Progress |
+| `linear_archiveIssue`          | Archive an issue                                              | Medium   | ✅ Implemented |
+| `linear_setIssuePriority`      | Set the priority of an issue                                  | High     | ✅ Implemented |
+| `linear_transferIssue`         | Transfer an issue to another team                             | Medium   | ✅ Implemented |
+| `linear_duplicateIssue`        | Duplicate an issue                                            | Medium   | ✅ Implemented |
+| `linear_getIssueHistory`       | Get the history of changes made to an issue                   | Medium   | ✅ Implemented |
 
 ### Comment Management
 

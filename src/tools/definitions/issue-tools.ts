@@ -309,4 +309,333 @@ export const removeIssueLabelToolDefinition: MCPToolDefinition = {
       labelId: { type: "string" }
     }
   }
+};
+
+/**
+ * Tool definition for assigning an issue to a user
+ */
+export const assignIssueToolDefinition: MCPToolDefinition = {
+  name: "linear_assignIssue",
+  description: "Assign an issue to a user",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue to assign (e.g., ABC-123)",
+      },
+      assigneeId: {
+        type: "string",
+        description: "ID of the user to assign the issue to, or null to unassign",
+      },
+    },
+    required: ["issueId", "assigneeId"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      issue: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          identifier: { type: "string" },
+          title: { type: "string" },
+          assignee: { type: "object" },
+          url: { type: "string" }
+        }
+      }
+    }
+  }
+};
+
+/**
+ * Tool definition for subscribing to issue updates
+ */
+export const subscribeToIssueToolDefinition: MCPToolDefinition = {
+  name: "linear_subscribeToIssue",
+  description: "Subscribe to issue updates",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue to subscribe to (e.g., ABC-123)",
+      },
+    },
+    required: ["issueId"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      message: { type: "string" }
+    }
+  }
+};
+
+/**
+ * Tool definition for converting an issue to a subtask
+ */
+export const convertIssueToSubtaskToolDefinition: MCPToolDefinition = {
+  name: "linear_convertIssueToSubtask",
+  description: "Convert an issue to a subtask",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue to convert (e.g., ABC-123)",
+      },
+      parentIssueId: {
+        type: "string",
+        description: "ID or identifier of the parent issue (e.g., ABC-456)",
+      },
+    },
+    required: ["issueId", "parentIssueId"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      issue: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          identifier: { type: "string" },
+          title: { type: "string" },
+          parent: { type: "object" },
+          url: { type: "string" }
+        }
+      }
+    }
+  }
+};
+
+/**
+ * Tool definition for creating issue relations
+ */
+export const createIssueRelationToolDefinition: MCPToolDefinition = {
+  name: "linear_createIssueRelation",
+  description: "Create relations between issues (blocks, is blocked by, etc.)",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the first issue (e.g., ABC-123)",
+      },
+      relatedIssueId: {
+        type: "string",
+        description: "ID or identifier of the second issue (e.g., ABC-456)",
+      },
+      type: {
+        type: "string",
+        description: "Type of relation: 'blocks', 'blocked_by', 'related', 'duplicate', 'duplicate_of'",
+        enum: ["blocks", "blocked_by", "related", "duplicate", "duplicate_of"]
+      },
+    },
+    required: ["issueId", "relatedIssueId", "type"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      relation: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          type: { type: "string" },
+          issueIdentifier: { type: "string" },
+          relatedIssueIdentifier: { type: "string" }
+        }
+      }
+    }
+  }
+};
+
+/**
+ * Tool definition for archiving an issue
+ */
+export const archiveIssueToolDefinition: MCPToolDefinition = {
+  name: "linear_archiveIssue",
+  description: "Archive an issue",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue to archive (e.g., ABC-123)",
+      },
+    },
+    required: ["issueId"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      message: { type: "string" }
+    }
+  }
+};
+
+/**
+ * Tool definition for setting issue priority
+ */
+export const setIssuePriorityToolDefinition: MCPToolDefinition = {
+  name: "linear_setIssuePriority",
+  description: "Set the priority of an issue",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue (e.g., ABC-123)",
+      },
+      priority: {
+        type: "number",
+        description: "Priority level (0 = No priority, 1 = Urgent, 2 = High, 3 = Normal, 4 = Low)",
+        enum: [0, 1, 2, 3, 4]
+      },
+    },
+    required: ["issueId", "priority"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      issue: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          identifier: { type: "string" },
+          title: { type: "string" },
+          priority: { type: "number" },
+          url: { type: "string" }
+        }
+      }
+    }
+  }
+};
+
+/**
+ * Tool definition for transferring an issue to another team
+ */
+export const transferIssueToolDefinition: MCPToolDefinition = {
+  name: "linear_transferIssue",
+  description: "Transfer an issue to another team",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue to transfer (e.g., ABC-123)",
+      },
+      teamId: {
+        type: "string",
+        description: "ID of the team to transfer the issue to",
+      },
+    },
+    required: ["issueId", "teamId"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      issue: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          identifier: { type: "string" },
+          title: { type: "string" },
+          team: { type: "object" },
+          url: { type: "string" }
+        }
+      }
+    }
+  }
+};
+
+/**
+ * Tool definition for duplicating an issue
+ */
+export const duplicateIssueToolDefinition: MCPToolDefinition = {
+  name: "linear_duplicateIssue",
+  description: "Duplicate an issue",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue to duplicate (e.g., ABC-123)",
+      },
+    },
+    required: ["issueId"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      success: { type: "boolean" },
+      originalIssue: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          identifier: { type: "string" },
+          title: { type: "string" }
+        }
+      },
+      duplicatedIssue: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          identifier: { type: "string" },
+          title: { type: "string" },
+          url: { type: "string" }
+        }
+      }
+    }
+  }
+};
+
+/**
+ * Tool definition for getting issue history
+ */
+export const getIssueHistoryToolDefinition: MCPToolDefinition = {
+  name: "linear_getIssueHistory",
+  description: "Get the history of changes made to an issue",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue (e.g., ABC-123)",
+      },
+      limit: {
+        type: "number",
+        description: "Maximum number of history events to return (default: 10)",
+      },
+    },
+    required: ["issueId"],
+  },
+  output_schema: {
+    type: "object",
+    properties: {
+      issueId: { type: "string" },
+      identifier: { type: "string" },
+      history: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            createdAt: { type: "string" },
+            actor: { type: "object" },
+            type: { type: "string" },
+            from: { type: "string" },
+            to: { type: "string" }
+          }
+        }
+      }
+    }
+  }
 }; 

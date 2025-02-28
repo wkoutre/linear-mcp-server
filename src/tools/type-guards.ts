@@ -153,4 +153,152 @@ export function isRemoveIssueLabelArgs(args: unknown): args is {
     "labelId" in args &&
     typeof (args as { labelId: string }).labelId === "string"
   );
+}
+
+/**
+ * Type guard for linear_assignIssue tool arguments
+ */
+export function isAssignIssueArgs(args: unknown): args is {
+  issueId: string;
+  assigneeId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    "assigneeId" in args &&
+    typeof (args as { assigneeId: string }).assigneeId === "string"
+  );
+}
+
+/**
+ * Type guard for linear_subscribeToIssue tool arguments
+ */
+export function isSubscribeToIssueArgs(args: unknown): args is {
+  issueId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string"
+  );
+}
+
+/**
+ * Type guard for linear_convertIssueToSubtask tool arguments
+ */
+export function isConvertIssueToSubtaskArgs(args: unknown): args is {
+  issueId: string;
+  parentIssueId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    "parentIssueId" in args &&
+    typeof (args as { parentIssueId: string }).parentIssueId === "string"
+  );
+}
+
+/**
+ * Type guard for linear_createIssueRelation tool arguments
+ */
+export function isCreateIssueRelationArgs(args: unknown): args is {
+  issueId: string;
+  relatedIssueId: string;
+  type: "blocks" | "blocked_by" | "related" | "duplicate" | "duplicate_of";
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    "relatedIssueId" in args &&
+    typeof (args as { relatedIssueId: string }).relatedIssueId === "string" &&
+    "type" in args &&
+    typeof (args as { type: string }).type === "string" &&
+    ["blocks", "blocked_by", "related", "duplicate", "duplicate_of"].includes((args as { type: string }).type)
+  );
+}
+
+/**
+ * Type guard for linear_archiveIssue tool arguments
+ */
+export function isArchiveIssueArgs(args: unknown): args is {
+  issueId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string"
+  );
+}
+
+/**
+ * Type guard for linear_setIssuePriority tool arguments
+ */
+export function isSetIssuePriorityArgs(args: unknown): args is {
+  issueId: string;
+  priority: number;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    "priority" in args &&
+    typeof (args as { priority: number }).priority === "number" &&
+    [0, 1, 2, 3, 4].includes((args as { priority: number }).priority)
+  );
+}
+
+/**
+ * Type guard for linear_transferIssue tool arguments
+ */
+export function isTransferIssueArgs(args: unknown): args is {
+  issueId: string;
+  teamId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    "teamId" in args &&
+    typeof (args as { teamId: string }).teamId === "string"
+  );
+}
+
+/**
+ * Type guard for linear_duplicateIssue tool arguments
+ */
+export function isDuplicateIssueArgs(args: unknown): args is {
+  issueId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string"
+  );
+}
+
+/**
+ * Type guard for linear_getIssueHistory tool arguments
+ */
+export function isGetIssueHistoryArgs(args: unknown): args is {
+  issueId: string;
+  limit?: number;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    (!("limit" in args) || typeof (args as { limit: number }).limit === "number")
+  );
 } 
