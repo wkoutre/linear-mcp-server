@@ -4,7 +4,7 @@ A Model Context Protocol (MCP) server implementation for the Linear GraphQL API 
 
 ![Linear MCP Server](https://img.shields.io/badge/MCP-Linear-blue)
 [![npm version](https://img.shields.io/npm/v/@emmett.deen/linear-mcp-server.svg)](https://www.npmjs.com/package/@emmett.deen/linear-mcp-server)
-[![Smithery](https://img.shields.io/badge/Smithery-Compatible-brightgreen)](https://smithery.ai/server/linear)
+[![Smithery](https://img.shields.io/badge/Smithery-Compatible-brightgreen)](https://smithery.ai/server/@emmett-deen/linear-mcp-server)
 
 ## Features
 
