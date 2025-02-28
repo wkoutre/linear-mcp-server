@@ -17,11 +17,17 @@ import {
   handleSetIssuePriority,
   handleTransferIssue,
   handleDuplicateIssue,
-  handleGetIssueHistory
+  handleGetIssueHistory,
+  // Comment Management handlers
+  handleGetComments
 } from "./issue-handlers.js";
 import {
   handleGetProjects,
-  handleCreateProject
+  handleCreateProject,
+  // Project Management handlers
+  handleUpdateProject,
+  handleAddIssueToProject,
+  handleGetProjectIssues
 } from "./project-handlers.js";
 import { handleGetTeams } from "./team-handlers.js";
 import {
@@ -30,6 +36,12 @@ import {
   handleGetUsers,
   handleGetLabels
 } from "./user-handlers.js";
+import {
+  // Cycle Management handlers
+  handleGetCycles,
+  handleGetActiveCycle,
+  handleAddIssueToCycle
+} from "./cycle-handlers.js";
 
 /**
  * Registers all tool handlers for the Linear MCP server
@@ -50,6 +62,16 @@ export function registerToolHandlers(linearService: LinearService) {
     // Project tools
     linear_getProjects: handleGetProjects(linearService),
     linear_createProject: handleCreateProject(linearService),
+    
+    // Project Management tools
+    linear_updateProject: handleUpdateProject(linearService),
+    linear_addIssueToProject: handleAddIssueToProject(linearService),
+    linear_getProjectIssues: handleGetProjectIssues(linearService),
+    
+    // Cycle Management tools
+    linear_getCycles: handleGetCycles(linearService),
+    linear_getActiveCycle: handleGetActiveCycle(linearService),
+    linear_addIssueToCycle: handleAddIssueToCycle(linearService),
 
     // Issue tools
     linear_getIssues: handleGetIssues(linearService),
@@ -70,7 +92,10 @@ export function registerToolHandlers(linearService: LinearService) {
     linear_setIssuePriority: handleSetIssuePriority(linearService),
     linear_transferIssue: handleTransferIssue(linearService),
     linear_duplicateIssue: handleDuplicateIssue(linearService),
-    linear_getIssueHistory: handleGetIssueHistory(linearService)
+    linear_getIssueHistory: handleGetIssueHistory(linearService),
+    
+    // Comment Management tools
+    linear_getComments: handleGetComments(linearService)
   };
 }
 
@@ -101,5 +126,18 @@ export {
   handleSetIssuePriority,
   handleTransferIssue,
   handleDuplicateIssue,
-  handleGetIssueHistory
+  handleGetIssueHistory,
+  
+  // Comment Management handlers
+  handleGetComments,
+  
+  // Project Management handlers
+  handleUpdateProject,
+  handleAddIssueToProject,
+  handleGetProjectIssues,
+  
+  // Cycle Management handlers
+  handleGetCycles,
+  handleGetActiveCycle,
+  handleAddIssueToCycle
 }; 

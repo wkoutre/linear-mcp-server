@@ -41,45 +41,63 @@ The following tools are currently implemented and available in the Linear MCP Se
 | `linear_addIssueLabel`    | Add a label to an issue                                  | ✅ Implemented |
 | `linear_removeIssueLabel` | Remove a label from an issue                             | ✅ Implemented |
 
+### Issue Management Tools
+
+| Tool Name                      | Description                                                   | Status         |
+| ------------------------------ | ------------------------------------------------------------- | -------------- |
+| `linear_assignIssue`           | Assign an issue to a user                                     | ✅ Implemented |
+| `linear_subscribeToIssue`      | Subscribe to issue updates                                    | 🔄 In Progress |
+| `linear_convertIssueToSubtask` | Convert an issue to a subtask                                 | ✅ Implemented |
+| `linear_createIssueRelation`   | Create relations between issues (blocks, is blocked by, etc.) | 🔄 In Progress |
+| `linear_archiveIssue`          | Archive an issue                                              | ✅ Implemented |
+| `linear_setIssuePriority`      | Set the priority of an issue                                  | ✅ Implemented |
+| `linear_transferIssue`         | Transfer an issue to another team                             | ✅ Implemented |
+| `linear_duplicateIssue`        | Duplicate an issue                                            | ✅ Implemented |
+| `linear_getIssueHistory`       | Get the history of changes made to an issue                   | ✅ Implemented |
+
+### Comment Management Tools
+
+| Tool Name            | Description                   | Status         |
+| -------------------- | ----------------------------- | -------------- |
+| `linear_getComments` | Get all comments for an issue | ✅ Implemented |
+
+### Project Management Tools
+
+| Tool Name                  | Description                              | Status         |
+| -------------------------- | ---------------------------------------- | -------------- |
+| `linear_updateProject`     | Update an existing project               | ✅ Implemented |
+| `linear_addIssueToProject` | Add an existing issue to a project       | ✅ Implemented |
+| `linear_getProjectIssues`  | Get all issues associated with a project | ✅ Implemented |
+
+### Cycle Management Tools
+
+| Tool Name                | Description                               | Status         |
+| ------------------------ | ----------------------------------------- | -------------- |
+| `linear_getCycles`       | Get a list of all cycles                  | ✅ Implemented |
+| `linear_getActiveCycle`  | Get the currently active cycle for a team | ✅ Implemented |
+| `linear_addIssueToCycle` | Add an issue to a cycle                   | ✅ Implemented |
+
 ## Recommended Future Tools
 
 The following tools are recommended for future implementation to enhance the capabilities of the Linear MCP Server:
 
-### Issue Management
-
-| Tool Name                      | Description                                                   | Priority | Status         |
-| ------------------------------ | ------------------------------------------------------------- | -------- | -------------- |
-| `linear_assignIssue`           | Assign an issue to a user                                     | High     | ✅ Implemented |
-| `linear_subscribeToIssue`      | Subscribe to issue updates                                    | Low      | 🔄 In Progress |
-| `linear_convertIssueToSubtask` | Convert an issue to a subtask                                 | Medium   | ✅ Implemented |
-| `linear_createIssueRelation`   | Create relations between issues (blocks, is blocked by, etc.) | High     | 🔄 In Progress |
-| `linear_archiveIssue`          | Archive an issue                                              | Medium   | ✅ Implemented |
-| `linear_setIssuePriority`      | Set the priority of an issue                                  | High     | ✅ Implemented |
-| `linear_transferIssue`         | Transfer an issue to another team                             | Medium   | ✅ Implemented |
-| `linear_duplicateIssue`        | Duplicate an issue                                            | Medium   | ✅ Implemented |
-| `linear_getIssueHistory`       | Get the history of changes made to an issue                   | Medium   | ✅ Implemented |
-
 ### Comment Management
 
-| Tool Name              | Description                   | Priority | Status     |
-| ---------------------- | ----------------------------- | -------- | ---------- |
-| `linear_getComments`   | Get all comments for an issue | High     | 📝 Planned |
-| `linear_updateComment` | Update an existing comment    | Medium   | 📝 Planned |
-| `linear_deleteComment` | Delete a comment              | Low      | 📝 Planned |
+| Tool Name              | Description                | Priority | Status     |
+| ---------------------- | -------------------------- | -------- | ---------- |
+| `linear_updateComment` | Update an existing comment | Medium   | 📝 Planned |
+| `linear_deleteComment` | Delete a comment           | Low      | 📝 Planned |
 
 ### Project Management
 
-| Tool Name                       | Description                              | Priority | Status     |
-| ------------------------------- | ---------------------------------------- | -------- | ---------- |
-| `linear_updateProject`          | Update an existing project               | High     | 📝 Planned |
-| `linear_archiveProject`         | Archive a project                        | Medium   | 📝 Planned |
-| `linear_getProjectUpdates`      | Get updates for a project                | Medium   | 📝 Planned |
-| `linear_addIssueToProject`      | Add an existing issue to a project       | High     | 📝 Planned |
-| `linear_removeIssueFromProject` | Remove an issue from a project           | Medium   | 📝 Planned |
-| `linear_getProjectIssues`       | Get all issues associated with a project | High     | 📝 Planned |
-| `linear_getProjectMembers`      | Get members assigned to a project        | Medium   | 📝 Planned |
-| `linear_addProjectMember`       | Add a member to a project                | Medium   | 📝 Planned |
-| `linear_removeProjectMember`    | Remove a member from a project           | Medium   | 📝 Planned |
+| Tool Name                       | Description                       | Priority | Status     |
+| ------------------------------- | --------------------------------- | -------- | ---------- |
+| `linear_archiveProject`         | Archive a project                 | Medium   | 📝 Planned |
+| `linear_getProjectUpdates`      | Get updates for a project         | Medium   | 📝 Planned |
+| `linear_removeIssueFromProject` | Remove an issue from a project    | Medium   | 📝 Planned |
+| `linear_getProjectMembers`      | Get members assigned to a project | Medium   | 📝 Planned |
+| `linear_addProjectMember`       | Add a member to a project         | Medium   | 📝 Planned |
+| `linear_removeProjectMember`    | Remove a member from a project    | Medium   | 📝 Planned |
 
 ### Initiative Management
 
@@ -96,17 +114,14 @@ The following tools are recommended for future implementation to enhance the cap
 
 ### Cycle Management
 
-| Tool Name                     | Description                               | Priority | Status     |
-| ----------------------------- | ----------------------------------------- | -------- | ---------- |
-| `linear_getCycles`            | Get a list of all cycles                  | High     | 📝 Planned |
-| `linear_getCycleById`         | Get details of a specific cycle           | Medium   | 📝 Planned |
-| `linear_createCycle`          | Create a new cycle                        | Medium   | 📝 Planned |
-| `linear_updateCycle`          | Update an existing cycle                  | Medium   | 📝 Planned |
-| `linear_getActiveCycle`       | Get the currently active cycle for a team | High     | 📝 Planned |
-| `linear_addIssueToCycle`      | Add an issue to a cycle                   | High     | 📝 Planned |
-| `linear_removeIssueFromCycle` | Remove an issue from a cycle              | Medium   | 📝 Planned |
-| `linear_completeCycle`        | Mark a cycle as complete                  | Medium   | 📝 Planned |
-| `linear_getCycleStats`        | Get statistics for a cycle                | Medium   | 📝 Planned |
+| Tool Name                     | Description                     | Priority | Status     |
+| ----------------------------- | ------------------------------- | -------- | ---------- |
+| `linear_getCycleById`         | Get details of a specific cycle | Medium   | 📝 Planned |
+| `linear_createCycle`          | Create a new cycle              | Medium   | 📝 Planned |
+| `linear_updateCycle`          | Update an existing cycle        | Medium   | 📝 Planned |
+| `linear_removeIssueFromCycle` | Remove an issue from a cycle    | Medium   | 📝 Planned |
+| `linear_completeCycle`        | Mark a cycle as complete        | Medium   | 📝 Planned |
+| `linear_getCycleStats`        | Get statistics for a cycle      | Medium   | 📝 Planned |
 
 ### Milestone Management
 

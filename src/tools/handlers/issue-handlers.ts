@@ -1,4 +1,4 @@
-import { isAddIssueLabelArgs, isArchiveIssueArgs, isAssignIssueArgs, isConvertIssueToSubtaskArgs, isCreateCommentArgs, isCreateIssueArgs, isCreateIssueRelationArgs, isDuplicateIssueArgs, isGetIssueByIdArgs, isGetIssueHistoryArgs, isGetIssuesArgs, isRemoveIssueLabelArgs, isSearchIssuesArgs, isSetIssuePriorityArgs, isSubscribeToIssueArgs, isTransferIssueArgs, isUpdateIssueArgs } from "../type-guards.js";
+import { isAddIssueLabelArgs, isArchiveIssueArgs, isAssignIssueArgs, isConvertIssueToSubtaskArgs, isCreateCommentArgs, isCreateIssueArgs, isCreateIssueRelationArgs, isDuplicateIssueArgs, isGetCommentsArgs, isGetIssueByIdArgs, isGetIssueHistoryArgs, isGetIssuesArgs, isRemoveIssueLabelArgs, isSearchIssuesArgs, isSetIssuePriorityArgs, isSubscribeToIssueArgs, isTransferIssueArgs, isUpdateIssueArgs } from "../type-guards.js";
 import { LinearService } from "../../services/linear-service.js";
 import { logError } from "../../utils/config.js";
 
@@ -303,6 +303,24 @@ export function handleGetIssueHistory(linearService: LinearService) {
       return await linearService.getIssueHistory(args.issueId, args.limit);
     } catch (error) {
       logError("Error getting issue history", error);
+      throw error;
+    }
+  };
+}
+
+/**
+ * Handler for getting comments for an issue
+ */
+export function handleGetComments(linearService: LinearService) {
+  return async (args: unknown) => {
+    try {
+      if (!isGetCommentsArgs(args)) {
+        throw new Error("Invalid arguments for getComments");
+      }
+      
+      return await linearService.getComments(args.issueId, args.limit);
+    } catch (error) {
+      logError("Error getting comments for issue", error);
       throw error;
     }
   };

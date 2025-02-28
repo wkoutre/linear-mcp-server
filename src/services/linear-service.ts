@@ -763,4 +763,335 @@ export class LinearService {
       throw error;
     }
   }
+
+  /**
+   * Get all comments for an issue
+   * @param issueId The ID or identifier of the issue
+   * @param limit Maximum number of comments to return
+   * @returns List of comments
+   */
+  async getComments(issueId: string, limit = 25) {
+    try {
+      // Get the issue
+      const issue = await this.client.issue(issueId);
+      if (!issue) {
+        throw new Error(`Issue with ID ${issueId} not found`);
+      }
+      
+      // Get comments
+      const comments = await issue.comments({ first: limit });
+      
+      // Process comments
+      return Promise.all(comments.nodes.map(async (comment) => {
+        const userData = comment.user ? await comment.user : null;
+        
+        return {
+          id: comment.id,
+          body: comment.body,
+          createdAt: comment.createdAt,
+          user: userData ? {
+            id: userData.id,
+            name: userData.name,
+            displayName: userData.displayName
+          } : null,
+          url: comment.url
+        };
+      }));
+    } catch (error) {
+      console.error("Error getting comments:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update an existing project
+   * @param args Project update data
+   * @returns Updated project
+   */
+  async updateProject(args: {
+    id: string;
+    name?: string;
+    description?: string;
+    state?: string;
+  }) {
+    try {
+      // Get the project
+      const project = await this.client.project(args.id);
+      if (!project) {
+        throw new Error(`Project with ID ${args.id} not found`);
+      }
+      
+      // Update the project using client.updateProject
+      const updatePayload = await this.client.updateProject(args.id, {
+        name: args.name,
+        description: args.description,
+        state: args.state as any
+      });
+      
+      if (updatePayload.success) {
+        // Get the updated project data
+        const updatedProject = await this.client.project(args.id);
+        
+        // Return the updated project info
+        return {
+          id: updatedProject.id,
+          name: updatedProject.name,
+          description: updatedProject.description,
+          state: updatedProject.state,
+          url: updatedProject.url
+        };
+      } else {
+        throw new Error("Failed to update project");
+      }
+    } catch (error) {
+      console.error("Error updating project:", error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Add an issue to a project
+   * @param issueId ID of the issue to add
+   * @param projectId ID of the project
+   * @returns Success status and issue details
+   */
+  async addIssueToProject(issueId: string, projectId: string) {
+    try {
+      // Get the issue
+      const issue = await this.client.issue(issueId);
+      if (!issue) {
+        throw new Error(`Issue with ID ${issueId} not found`);
+      }
+      
+      // Get the project
+      const project = await this.client.project(projectId);
+      if (!project) {
+        throw new Error(`Project with ID ${projectId} not found`);
+      }
+      
+      // Update the issue with the project ID
+      await issue.update({
+        projectId: projectId
+      });
+      
+      // Get the updated issue data with project
+      const updatedIssue = await this.client.issue(issueId);
+      const projectData = updatedIssue.project ? await updatedIssue.project : null;
+      
+      return {
+        success: true,
+        issue: {
+          id: updatedIssue.id,
+          identifier: updatedIssue.identifier,
+          title: updatedIssue.title,
+          project: projectData ? {
+            id: projectData.id,
+            name: projectData.name
+          } : null
+        }
+      };
+    } catch (error) {
+      console.error("Error adding issue to project:", error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Get all issues associated with a project
+   * @param projectId ID of the project
+   * @param limit Maximum number of issues to return
+   * @returns List of issues in the project
+   */
+  async getProjectIssues(projectId: string, limit = 25) {
+    try {
+      // Get the project
+      const project = await this.client.project(projectId);
+      if (!project) {
+        throw new Error(`Project with ID ${projectId} not found`);
+      }
+      
+      // Get issues for the project
+      const issues = await this.client.issues({
+        first: limit,
+        filter: {
+          project: {
+            id: { eq: projectId }
+          }
+        }
+      });
+      
+      // Process the issues
+      return Promise.all(issues.nodes.map(async (issue) => {
+        const teamData = issue.team ? await issue.team : null;
+        const assigneeData = issue.assignee ? await issue.assignee : null;
+        
+        return {
+          id: issue.id,
+          identifier: issue.identifier,
+          title: issue.title,
+          description: issue.description,
+          state: issue.state,
+          priority: issue.priority,
+          team: teamData ? {
+            id: teamData.id,
+            name: teamData.name
+          } : null,
+          assignee: assigneeData ? {
+            id: assigneeData.id,
+            name: assigneeData.name
+          } : null,
+          url: issue.url
+        };
+      }));
+    } catch (error) {
+      console.error("Error getting project issues:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Gets a list of all cycles
+   * @param teamId Optional team ID to filter cycles by team
+   * @param limit Maximum number of cycles to return
+   * @returns List of cycles
+   */
+  async getCycles(teamId?: string, limit = 25) {
+    try {
+      const filters: Record<string, any> = {};
+      
+      if (teamId) {
+        filters.team = { id: { eq: teamId } };
+      }
+      
+      const cycles = await this.client.cycles({
+        filter: filters,
+        first: limit
+      });
+      
+      const cyclesData = await cycles.nodes;
+      
+      return Promise.all(cyclesData.map(async (cycle) => {
+        // Get team information
+        const team = cycle.team ? await cycle.team : null;
+        
+        return {
+          id: cycle.id,
+          number: cycle.number,
+          name: cycle.name,
+          description: cycle.description,
+          startsAt: cycle.startsAt,
+          endsAt: cycle.endsAt,
+          completedAt: cycle.completedAt,
+          team: team ? {
+            id: team.id,
+            name: team.name,
+            key: team.key
+          } : null
+        };
+      }));
+    } catch (error) {
+      console.error("Error getting cycles:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Gets the currently active cycle for a team
+   * @param teamId ID of the team
+   * @returns Active cycle information with progress stats
+   */
+  async getActiveCycle(teamId: string) {
+    try {
+      // Get the team
+      const team = await this.client.team(teamId);
+      if (!team) {
+        throw new Error(`Team with ID ${teamId} not found`);
+      }
+      
+      // Get the active cycle for the team
+      const activeCycle = await team.activeCycle;
+      if (!activeCycle) {
+        throw new Error(`No active cycle found for team ${team.name}`);
+      }
+      
+      // Get cycle issues for count and progress
+      const cycleIssues = await this.client.issues({
+        filter: {
+          cycle: { id: { eq: activeCycle.id } }
+        }
+      });
+      const issueNodes = await cycleIssues.nodes;
+      
+      // Calculate progress
+      const totalIssues = issueNodes.length;
+      const completedIssues = issueNodes.filter(issue => issue.completedAt).length;
+      const progress = totalIssues > 0 ? (completedIssues / totalIssues) * 100 : 0;
+      
+      return {
+        id: activeCycle.id,
+        number: activeCycle.number,
+        name: activeCycle.name,
+        description: activeCycle.description,
+        startsAt: activeCycle.startsAt,
+        endsAt: activeCycle.endsAt,
+        team: {
+          id: team.id,
+          name: team.name,
+          key: team.key
+        },
+        progress: Math.round(progress * 100) / 100, // Round to 2 decimal places
+        issueCount: totalIssues,
+        completedIssueCount: completedIssues
+      };
+    } catch (error) {
+      console.error("Error getting active cycle:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Adds an issue to a cycle
+   * @param issueId ID or identifier of the issue
+   * @param cycleId ID of the cycle
+   * @returns Success status and updated issue information
+   */
+  async addIssueToCycle(issueId: string, cycleId: string) {
+    try {
+      // Get the issue
+      const issueResult = await this.client.issue(issueId);
+      if (!issueResult) {
+        throw new Error(`Issue with ID ${issueId} not found`);
+      }
+      
+      // Get the cycle
+      const cycleResult = await this.client.cycle(cycleId);
+      if (!cycleResult) {
+        throw new Error(`Cycle with ID ${cycleId} not found`);
+      }
+      
+      // Update the issue with the cycle ID
+      await this.client.updateIssue(issueResult.id, { cycleId: cycleId });
+      
+      // Get the updated issue data
+      const updatedIssue = await this.client.issue(issueId);
+      const cycleData = await this.client.cycle(cycleId);
+      
+      return {
+        success: true,
+        issue: {
+          id: updatedIssue.id,
+          identifier: updatedIssue.identifier,
+          title: updatedIssue.title,
+          cycle: cycleData ? {
+            id: cycleData.id,
+            number: cycleData.number,
+            name: cycleData.name
+          } : null
+        }
+      };
+    } catch (error) {
+      console.error("Error adding issue to cycle:", error);
+      throw error;
+    }
+  }
 } 

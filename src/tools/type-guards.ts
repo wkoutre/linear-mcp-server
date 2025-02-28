@@ -301,4 +301,119 @@ export function isGetIssueHistoryArgs(args: unknown): args is {
     typeof (args as { issueId: string }).issueId === "string" &&
     (!("limit" in args) || typeof (args as { limit: number }).limit === "number")
   );
+}
+
+/**
+ * Type guard for linear_getComments tool arguments
+ */
+export function isGetCommentsArgs(args: unknown): args is {
+  issueId: string;
+  limit?: number;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    (!("limit" in args) || typeof (args as { limit: number }).limit === "number")
+  );
+}
+
+/**
+ * Type guard for linear_updateProject tool arguments
+ */
+export function isUpdateProjectArgs(args: unknown): args is {
+  id: string;
+  name?: string;
+  description?: string;
+  state?: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "id" in args &&
+    typeof (args as { id: string }).id === "string" &&
+    (!("name" in args) || typeof (args as { name: string }).name === "string") &&
+    (!("description" in args) || typeof (args as { description: string }).description === "string") &&
+    (!("state" in args) || typeof (args as { state: string }).state === "string")
+  );
+}
+
+/**
+ * Type guard for linear_addIssueToProject tool arguments
+ */
+export function isAddIssueToProjectArgs(args: unknown): args is {
+  issueId: string;
+  projectId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    "projectId" in args &&
+    typeof (args as { projectId: string }).projectId === "string"
+  );
+}
+
+/**
+ * Type guard for linear_getProjectIssues tool arguments
+ */
+export function isGetProjectIssuesArgs(args: unknown): args is {
+  projectId: string;
+  limit?: number;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "projectId" in args &&
+    typeof (args as { projectId: string }).projectId === "string" &&
+    (!("limit" in args) || typeof (args as { limit: number }).limit === "number")
+  );
+}
+
+/**
+ * Type guard for linear_getCycles tool arguments
+ */
+export function isGetCyclesArgs(args: unknown): args is {
+  teamId?: string;
+  limit?: number;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    (!("teamId" in args) || typeof (args as { teamId: string }).teamId === "string") &&
+    (!("limit" in args) || typeof (args as { limit: number }).limit === "number")
+  );
+}
+
+/**
+ * Type guard for linear_getActiveCycle tool arguments
+ */
+export function isGetActiveCycleArgs(args: unknown): args is {
+  teamId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "teamId" in args &&
+    typeof (args as { teamId: string }).teamId === "string"
+  );
+}
+
+/**
+ * Type guard for linear_addIssueToCycle tool arguments
+ */
+export function isAddIssueToCycleArgs(args: unknown): args is {
+  issueId: string;
+  cycleId: string;
+} {
+  return (
+    typeof args === "object" &&
+    args !== null &&
+    "issueId" in args &&
+    typeof (args as { issueId: string }).issueId === "string" &&
+    "cycleId" in args &&
+    typeof (args as { cycleId: string }).cycleId === "string"
+  );
 } 

@@ -638,4 +638,45 @@ export const getIssueHistoryToolDefinition: MCPToolDefinition = {
       }
     }
   }
+};
+
+/**
+ * Tool definition for getting comments for an issue
+ */
+export const getCommentsToolDefinition: MCPToolDefinition = {
+  name: "linear_getComments",
+  description: "Get all comments for an issue",
+  input_schema: {
+    type: "object",
+    properties: {
+      issueId: {
+        type: "string",
+        description: "ID or identifier of the issue to get comments from (e.g., ABC-123)",
+      },
+      limit: {
+        type: "number",
+        description: "Maximum number of comments to return (default: 25)",
+      },
+    },
+    required: ["issueId"],
+  },
+  output_schema: {
+    type: "array",
+    items: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        body: { type: "string" },
+        createdAt: { type: "string" },
+        user: { 
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            name: { type: "string" }
+          }
+        },
+        url: { type: "string" }
+      }
+    }
+  }
 }; 

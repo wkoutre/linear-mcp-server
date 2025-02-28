@@ -17,11 +17,17 @@ import {
   setIssuePriorityToolDefinition,
   transferIssueToolDefinition,
   duplicateIssueToolDefinition,
-  getIssueHistoryToolDefinition
+  getIssueHistoryToolDefinition,
+  // Comment Management tools
+  getCommentsToolDefinition
 } from "./issue-tools.js";
 import {
   getProjectsToolDefinition,
-  createProjectToolDefinition
+  createProjectToolDefinition,
+  // Project Management tools
+  updateProjectToolDefinition,
+  addIssueToProjectToolDefinition,
+  getProjectIssuesToolDefinition
 } from "./project-tools.js";
 import { getTeamsToolDefinition } from "./team-tools.js";
 import {
@@ -30,6 +36,12 @@ import {
   getUsersToolDefinition,
   getLabelsToolDefinition
 } from "./user-tools.js";
+import {
+  // Cycle Management tools
+  getCyclesToolDefinition,
+  getActiveCycleToolDefinition,
+  addIssueToCycleToolDefinition
+} from "./cycle-tools.js";
 
 // All tool definitions
 export const allToolDefinitions: MCPToolDefinition[] = [
@@ -45,6 +57,16 @@ export const allToolDefinitions: MCPToolDefinition[] = [
   // Project tools
   getProjectsToolDefinition,
   createProjectToolDefinition,
+  
+  // Project Management tools
+  updateProjectToolDefinition,
+  addIssueToProjectToolDefinition,
+  getProjectIssuesToolDefinition,
+  
+  // Cycle Management tools
+  getCyclesToolDefinition,
+  getActiveCycleToolDefinition,
+  addIssueToCycleToolDefinition,
   
   // Issue tools
   getIssuesToolDefinition,
@@ -65,7 +87,10 @@ export const allToolDefinitions: MCPToolDefinition[] = [
   setIssuePriorityToolDefinition,
   transferIssueToolDefinition,
   duplicateIssueToolDefinition,
-  getIssueHistoryToolDefinition
+  getIssueHistoryToolDefinition,
+  
+  // Comment Management tools
+  getCommentsToolDefinition
 ];
 
 // Export all tool definitions individually
@@ -95,5 +120,18 @@ export {
   setIssuePriorityToolDefinition,
   transferIssueToolDefinition,
   duplicateIssueToolDefinition,
-  getIssueHistoryToolDefinition
+  getIssueHistoryToolDefinition,
+  
+  // Comment Management tools
+  getCommentsToolDefinition,
+  
+  // Project Management tools
+  updateProjectToolDefinition,
+  addIssueToProjectToolDefinition,
+  getProjectIssuesToolDefinition,
+  
+  // Cycle Management tools
+  getCyclesToolDefinition,
+  getActiveCycleToolDefinition,
+  addIssueToCycleToolDefinition
 }; 
