@@ -29,7 +29,14 @@ export function getLinearApiToken(): string | undefined {
   const tokenFromArgs = getCommandLineArg('--token');
   
   // If not found, try to get it from environment variables
-  const tokenFromEnv = process.env.LINEAR_API_TOKEN;
+  // Check both LINEAR_API_TOKEN and LINEAR_API_KEY for compatibility with Smithery
+  const tokenFromEnv = process.env.LINEAR_API_TOKEN || process.env.LINEAR_API_KEY;
+  
+  // Log for debugging
+  if (!tokenFromArgs && !tokenFromEnv) {
+    console.error('API token not found in command line args or environment variables');
+    console.error('Environment variables:', Object.keys(process.env).filter(key => key.includes('LINEAR')));
+  }
   
   return tokenFromArgs || tokenFromEnv;
 }

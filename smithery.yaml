@@ -6,16 +6,16 @@ startCommand:
     # JSON Schema defining the configuration options for the MCP
     type: object
     required:
-      - linearApiKey
+      - token
     properties:
-      linearApiKey:
+      token:
         type: string
         description: Your Linear API key. Required for Linear API access.
   commandFunction: |
     (config) => ({
       command: 'node',
-      args: ['dist/index.js'],
+      args: ['dist/index.js', '--token', config.token],
       env: {
-        LINEAR_API_KEY: config.linearApiKey
+        LINEAR_API_TOKEN: config.token
       }
     })
