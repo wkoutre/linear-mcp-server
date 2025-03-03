@@ -29,7 +29,7 @@ import {
   addIssueToProjectToolDefinition,
   getProjectIssuesToolDefinition
 } from "./project-tools.js";
-import { getTeamsToolDefinition } from "./team-tools.js";
+import { getTeamsToolDefinition, getWorkflowStatesToolDefinition } from "./team-tools.js";
 import {
   getViewerToolDefinition,
   getOrganizationToolDefinition,
@@ -53,6 +53,7 @@ export const allToolDefinitions: MCPToolDefinition[] = [
   
   // Team tools
   getTeamsToolDefinition,
+  getWorkflowStatesToolDefinition,
   
   // Project tools
   getProjectsToolDefinition,
@@ -106,6 +107,7 @@ export {
   getProjectsToolDefinition,
   createProjectToolDefinition,
   getTeamsToolDefinition,
+  getWorkflowStatesToolDefinition,
   getViewerToolDefinition,
   getOrganizationToolDefinition,
   getUsersToolDefinition,

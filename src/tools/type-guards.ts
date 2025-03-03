@@ -416,4 +416,30 @@ export function isAddIssueToCycleArgs(args: unknown): args is {
     "cycleId" in args &&
     typeof (args as { cycleId: string }).cycleId === "string"
   );
+}
+
+/**
+ * Type guard for linear_getWorkflowStates tool arguments
+ */
+export function isGetWorkflowStatesArgs(args: unknown): args is {
+  teamId: string;
+  includeArchived?: boolean;
+} {
+  if (
+    typeof args !== "object" ||
+    args === null ||
+    !("teamId" in args) ||
+    typeof (args as { teamId: string }).teamId !== "string"
+  ) {
+    return false;
+  }
+
+  if (
+    "includeArchived" in args &&
+    typeof (args as { includeArchived: boolean }).includeArchived !== "boolean"
+  ) {
+    return false;
+  }
+
+  return true;
 } 

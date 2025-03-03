@@ -29,7 +29,7 @@ import {
   handleAddIssueToProject,
   handleGetProjectIssues
 } from "./project-handlers.js";
-import { handleGetTeams } from "./team-handlers.js";
+import { handleGetTeams, handleGetWorkflowStates } from "./team-handlers.js";
 import {
   handleGetViewer,
   handleGetOrganization,
@@ -58,6 +58,7 @@ export function registerToolHandlers(linearService: LinearService) {
 
     // Team tools
     linear_getTeams: handleGetTeams(linearService),
+    linear_getWorkflowStates: handleGetWorkflowStates(linearService),
 
     // Project tools
     linear_getProjects: handleGetProjects(linearService),
@@ -112,6 +113,7 @@ export {
   handleGetProjects,
   handleCreateProject,
   handleGetTeams,
+  handleGetWorkflowStates,
   handleGetViewer,
   handleGetOrganization,
   handleGetUsers,
