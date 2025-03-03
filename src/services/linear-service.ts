@@ -1106,8 +1106,7 @@ export class LinearService {
       // Use GraphQL to query workflow states for the team
       const response = await this.client.workflowStates({
         filter: {
-          team: { id: { eq: teamId } },
-          ...(includeArchived ? {} : { archivedAt: { null: true } })
+          team: { id: { eq: teamId } }
         }
       });
       
@@ -1115,8 +1114,14 @@ export class LinearService {
         return [];
       }
       
+      // Filter out archived states if includeArchived is false
+      let states = response.nodes;
+      if (!includeArchived) {
+        states = states.filter(state => !state.archivedAt);
+      }
+      
       // Map the response to match our output schema
-      return response.nodes.map(state => ({
+      return states.map(state => ({
         id: state.id,
         name: state.name,
         type: state.type,
@@ -1124,8 +1129,12 @@ export class LinearService {
         color: state.color,
         description: state.description || ""
       }));
-    } catch (error) {
-      throw new Error(`Failed to get workflow states: ${error.message}`);
+    } catch (error: unknown) {
+      // Properly handle the unknown error type
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Unknown error occurred';
+      throw new Error(`Failed to get workflow states: ${errorMessage}`);
     }
   }
 } 
