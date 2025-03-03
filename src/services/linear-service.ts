@@ -1094,4 +1094,38 @@ export class LinearService {
       throw error;
     }
   }
+
+  /**
+   * Get workflow states for a team
+   * @param teamId ID of the team to get workflow states for
+   * @param includeArchived Whether to include archived states (default: false)
+   * @returns Array of workflow states with their details
+   */
+  async getWorkflowStates(teamId: string, includeArchived = false) {
+    try {
+      // Use GraphQL to query workflow states for the team
+      const response = await this.client.workflowStates({
+        filter: {
+          team: { id: { eq: teamId } },
+          ...(includeArchived ? {} : { archivedAt: { null: true } })
+        }
+      });
+      
+      if (!response.nodes || response.nodes.length === 0) {
+        return [];
+      }
+      
+      // Map the response to match our output schema
+      return response.nodes.map(state => ({
+        id: state.id,
+        name: state.name,
+        type: state.type,
+        position: state.position,
+        color: state.color,
+        description: state.description || ""
+      }));
+    } catch (error) {
+      throw new Error(`Failed to get workflow states: ${error.message}`);
+    }
+  }
 } 

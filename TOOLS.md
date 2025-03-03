@@ -151,13 +151,13 @@ The following tools are recommended for future implementation to enhance the cap
 
 ### Workflow Management
 
-| Tool Name                      | Description                             | Priority | Status     |
-| ------------------------------ | --------------------------------------- | -------- | ---------- |
-| `linear_getWorkflowStates`     | Get all workflow states                 | Medium   | 📝 Planned |
-| `linear_createWorkflowState`   | Create a new workflow state             | Low      | 📝 Planned |
-| `linear_updateWorkflowState`   | Update a workflow state                 | Low      | 📝 Planned |
-| `linear_getTeamStates`         | Get workflow states for a specific team | Medium   | 📝 Planned |
-| `linear_reorderWorkflowStates` | Change the order of workflow states     | Low      | 📝 Planned |
+| Tool Name                      | Description                             | Priority | Status         |
+| ------------------------------ | --------------------------------------- | -------- | -------------- |
+| `linear_getWorkflowStates`     | Get all workflow states                 | Medium   | ✅ Implemented |
+| `linear_createWorkflowState`   | Create a new workflow state             | Low      | 📝 Planned     |
+| `linear_updateWorkflowState`   | Update a workflow state                 | Low      | 📝 Planned     |
+| `linear_getTeamStates`         | Get workflow states for a specific team | Medium   | 📝 Planned     |
+| `linear_reorderWorkflowStates` | Change the order of workflow states     | Low      | 📝 Planned     |
 
 ### Team Management
 
