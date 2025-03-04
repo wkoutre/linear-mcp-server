@@ -501,8 +501,16 @@ export class LinearService {
     state?: string;
     startDate?: string;
     targetDate?: string;
+    leadId?: string;
+    memberIds?: string[] | string;
+    sortOrder?: number;
+    icon?: string;
+    color?: string;
   }) {
     const teamIds = Array.isArray(args.teamIds) ? args.teamIds : [args.teamIds];
+    const memberIds = args.memberIds ? 
+      (Array.isArray(args.memberIds) ? args.memberIds : [args.memberIds]) : 
+      undefined;
     
     const createdProject = await this.client.createProject({
       name: args.name,
@@ -510,15 +518,31 @@ export class LinearService {
       teamIds: teamIds,
       state: args.state,
       startDate: args.startDate ? new Date(args.startDate) : undefined,
-      targetDate: args.targetDate ? new Date(args.targetDate) : undefined
+      targetDate: args.targetDate ? new Date(args.targetDate) : undefined,
+      leadId: args.leadId,
+      memberIds: memberIds,
+      sortOrder: args.sortOrder,
+      icon: args.icon,
+      color: args.color
     });
     
     if (createdProject.success && createdProject.project) {
       const projectData = await createdProject.project;
+      const leadData = projectData.lead ? await projectData.lead : null;
+      
       return {
         id: projectData.id,
         name: projectData.name,
         description: projectData.description,
+        state: projectData.state,
+        startDate: projectData.startDate,
+        targetDate: projectData.targetDate,
+        lead: leadData ? {
+          id: leadData.id,
+          name: leadData.name
+        } : null,
+        icon: projectData.icon,
+        color: projectData.color,
         url: projectData.url
       };
     } else {
@@ -993,6 +1017,13 @@ export class LinearService {
     name?: string;
     description?: string;
     state?: string;
+    startDate?: string;
+    targetDate?: string;
+    leadId?: string;
+    memberIds?: string[] | string;
+    sortOrder?: number;
+    icon?: string;
+    color?: string;
   }) {
     try {
       // Get the project
@@ -1001,16 +1032,29 @@ export class LinearService {
         throw new Error(`Project with ID ${args.id} not found`);
       }
       
+      // Process member IDs if provided
+      const memberIds = args.memberIds ? 
+        (Array.isArray(args.memberIds) ? args.memberIds : [args.memberIds]) : 
+        undefined;
+      
       // Update the project using client.updateProject
       const updatePayload = await this.client.updateProject(args.id, {
         name: args.name,
         description: args.description,
-        state: args.state as any
+        state: args.state as any,
+        startDate: args.startDate ? new Date(args.startDate) : undefined,
+        targetDate: args.targetDate ? new Date(args.targetDate) : undefined,
+        leadId: args.leadId,
+        memberIds: memberIds,
+        sortOrder: args.sortOrder,
+        icon: args.icon,
+        color: args.color
       });
       
       if (updatePayload.success) {
         // Get the updated project data
         const updatedProject = await this.client.project(args.id);
+        const leadData = updatedProject.lead ? await updatedProject.lead : null;
         
         // Return the updated project info
         return {
@@ -1018,6 +1062,14 @@ export class LinearService {
           name: updatedProject.name,
           description: updatedProject.description,
           state: updatedProject.state,
+          startDate: updatedProject.startDate,
+          targetDate: updatedProject.targetDate,
+          lead: leadData ? {
+            id: leadData.id,
+            name: leadData.name
+          } : null,
+          icon: updatedProject.icon,
+          color: updatedProject.color,
           url: updatedProject.url
         };
       } else {
@@ -1315,6 +1367,209 @@ export class LinearService {
         ? error.message 
         : 'Unknown error occurred';
       throw new Error(`Failed to get workflow states: ${errorMessage}`);
+    }
+  }
+
+  /**
+   * Creates a project update
+   * @param args Project update parameters
+   * @returns Created project update details
+   */
+  async createProjectUpdate(args: {
+    projectId: string;
+    body: string;
+    health?: 'onTrack' | 'atRisk' | 'offTrack' | string;
+    userId?: string;
+    attachments?: string[];
+  }) {
+    try {
+      // Get the project
+      const project = await this.client.project(args.projectId);
+      if (!project) {
+        throw new Error(`Project with ID ${args.projectId} not found`);
+      }
+
+      // Create the project update
+      const createPayload = await this.client.createProjectUpdate({
+        projectId: args.projectId,
+        body: args.body,
+        health: args.health as any
+        // Note: userId and attachmentIds are not supported in the direct API input
+        // The SDK uses the authenticated user by default
+      });
+
+      if (createPayload.success && createPayload.projectUpdate) {
+        const updateData = await createPayload.projectUpdate;
+        const userData = updateData.user ? await updateData.user : null;
+        
+        return {
+          id: updateData.id,
+          body: updateData.body,
+          health: updateData.health,
+          createdAt: updateData.createdAt,
+          updatedAt: updateData.updatedAt,
+          user: userData ? {
+            id: userData.id,
+            name: userData.name
+          } : null,
+          project: {
+            id: project.id,
+            name: project.name
+          }
+        };
+      } else {
+        throw new Error("Failed to create project update");
+      }
+    } catch (error) {
+      console.error("Error creating project update:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Updates an existing project update
+   * @param args Update parameters
+   * @returns Updated project update details
+   */
+  async updateProjectUpdate(args: {
+    id: string;
+    body?: string;
+    health?: 'onTrack' | 'atRisk' | 'offTrack' | string;
+  }) {
+    try {
+      // Get the project update
+      const projectUpdate = await this.client.projectUpdate(args.id);
+      if (!projectUpdate) {
+        throw new Error(`Project update with ID ${args.id} not found`);
+      }
+      
+      // Get project info for the response
+      const projectData = await projectUpdate.project;
+      if (!projectData) {
+        throw new Error(`Project not found for update with ID ${args.id}`);
+      }
+      
+      // Update the project update
+      const updatePayload = await this.client.updateProjectUpdate(args.id, {
+        body: args.body,
+        health: args.health as any
+      });
+      
+      if (updatePayload.success) {
+        // Get the updated project update data
+        const updatedProjectUpdate = await this.client.projectUpdate(args.id);
+        const userData = updatedProjectUpdate.user ? await updatedProjectUpdate.user : null;
+        
+        // Return the updated project update info
+        return {
+          id: updatedProjectUpdate.id,
+          body: updatedProjectUpdate.body,
+          health: updatedProjectUpdate.health,
+          createdAt: updatedProjectUpdate.createdAt,
+          updatedAt: updatedProjectUpdate.updatedAt,
+          user: userData ? {
+            id: userData.id,
+            name: userData.name
+          } : null,
+          project: {
+            id: projectData.id,
+            name: projectData.name
+          }
+        };
+      } else {
+        throw new Error("Failed to update project update");
+      }
+    } catch (error) {
+      console.error("Error updating project update:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Gets updates for a project
+   * @param projectId ID of the project
+   * @param limit Maximum number of updates to return
+   * @returns List of project updates
+   */
+  async getProjectUpdates(projectId: string, limit = 25) {
+    try {
+      // Get the project
+      const project = await this.client.project(projectId);
+      if (!project) {
+        throw new Error(`Project with ID ${projectId} not found`);
+      }
+      
+      // Get project updates
+      const updates = await this.client.projectUpdates({
+        first: limit,
+        filter: {
+          project: {
+            id: { eq: projectId }
+          }
+        }
+      });
+      
+      // Process and return the updates
+      return Promise.all(updates.nodes.map(async (update) => {
+        const userData = update.user ? await update.user : null;
+        
+        return {
+          id: update.id,
+          body: update.body,
+          health: update.health,
+          createdAt: update.createdAt,
+          updatedAt: update.updatedAt,
+          user: userData ? {
+            id: userData.id,
+            name: userData.name
+          } : null,
+          project: {
+            id: project.id,
+            name: project.name
+          }
+        };
+      }));
+    } catch (error) {
+      console.error("Error getting project updates:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Archives a project
+   * @param projectId ID of the project to archive
+   * @returns Success status and archived project info
+   */
+  async archiveProject(projectId: string) {
+    try {
+      // Get the project
+      const project = await this.client.project(projectId);
+      if (!project) {
+        throw new Error(`Project with ID ${projectId} not found`);
+      }
+      
+      // Archive the project
+      const archivePayload = await project.archive();
+      
+      if (archivePayload.success) {
+        // Get the archived project data
+        const archivedProject = await this.client.project(projectId);
+        
+        return {
+          success: true,
+          project: {
+            id: archivedProject.id,
+            name: archivedProject.name,
+            state: archivedProject.state,
+            archivedAt: archivedProject.archivedAt
+          }
+        };
+      } else {
+        throw new Error("Failed to archive project");
+      }
+    } catch (error) {
+      console.error("Error archiving project:", error);
+      throw error;
     }
   }
 } 
