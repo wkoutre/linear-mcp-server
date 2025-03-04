@@ -32,16 +32,60 @@ export function isSearchIssuesArgs(args: unknown): args is {
   states?: string[];
   limit?: number;
 } {
-  return (
-    typeof args === "object" &&
-    args !== null &&
-    (!("query" in args) || typeof (args as { query: string }).query === "string") &&
-    (!("teamId" in args) || typeof (args as { teamId: string }).teamId === "string") &&
-    (!("assigneeId" in args) || typeof (args as { assigneeId: string }).assigneeId === "string") &&
-    (!("projectId" in args) || typeof (args as { projectId: string }).projectId === "string") &&
-    (!("states" in args) || Array.isArray((args as { states: string[] }).states)) &&
-    (!("limit" in args) || typeof (args as { limit: number }).limit === "number")
-  );
+  // Check if args is an object
+  if (typeof args !== "object" || args === null) {
+    console.error("searchIssues args is not an object or is null");
+    return false;
+  }
+
+  // Check query
+  if ("query" in args && typeof (args as { query: unknown }).query !== "string") {
+    console.error("searchIssues query is not a string");
+    return false;
+  }
+
+  // Check teamId
+  if ("teamId" in args && typeof (args as { teamId: unknown }).teamId !== "string") {
+    console.error("searchIssues teamId is not a string");
+    return false;
+  }
+
+  // Check assigneeId
+  if ("assigneeId" in args && typeof (args as { assigneeId: unknown }).assigneeId !== "string") {
+    console.error("searchIssues assigneeId is not a string");
+    return false;
+  }
+
+  // Check projectId
+  if ("projectId" in args && typeof (args as { projectId: unknown }).projectId !== "string") {
+    console.error("searchIssues projectId is not a string");
+    return false;
+  }
+
+  // Check states
+  if ("states" in args) {
+    const states = (args as { states: unknown }).states;
+    if (!Array.isArray(states)) {
+      console.error("searchIssues states is not an array");
+      return false;
+    }
+    
+    // Check that all elements in the array are strings
+    for (let i = 0; i < states.length; i++) {
+      if (typeof states[i] !== "string") {
+        console.error(`searchIssues states[${i}] is not a string`);
+        return false;
+      }
+    }
+  }
+
+  // Check limit
+  if ("limit" in args && typeof (args as { limit: unknown }).limit !== "number") {
+    console.error("searchIssues limit is not a number");
+    return false;
+  }
+
+  return true;
 }
 
 /**
