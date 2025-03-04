@@ -228,84 +228,149 @@ export class LinearService {
     states?: string[];
     limit?: number;
   }) {
-    // Build filter object
-    const filter: any = {};
-    
-    if (args.teamId) {
-      filter.team = { id: { eq: args.teamId } };
-    }
-    
-    if (args.assigneeId) {
-      filter.assignee = { id: { eq: args.assigneeId } };
-    }
-    
-    if (args.projectId) {
-      filter.project = { id: { eq: args.projectId } };
-    }
-    
-    if (args.states && args.states.length > 0) {
-      filter.state = { id: { in: args.states } };
-    }
-    
-    // Execute the search
-    const issues = await this.client.issues({
-      first: args.limit || 25,
-      filter,
-      ...(args.query ? { filter: { ...filter, title: { contains: args.query } } } : {})
-    });
-    
-    // Process the results
-    return Promise.all(issues.nodes.map(async issue => {
-      // For relations, we need to fetch the objects
-      const teamData = issue.team ? await issue.team : null;
-      const assigneeData = issue.assignee ? await issue.assignee : null;
-      const projectData = issue.project ? await issue.project : null;
-      const cycleData = issue.cycle ? await issue.cycle : null;
-      const parentData = issue.parent ? await issue.parent : null;
+    try {
+      // Build filter object
+      const filter: any = {};
       
-      // Get labels
-      const labels = await issue.labels();
-      const labelsList = labels.nodes.map(label => ({
-        id: label.id,
-        name: label.name,
-        color: label.color
+      if (args.teamId) {
+        filter.team = { id: { eq: args.teamId } };
+      }
+      
+      if (args.assigneeId) {
+        filter.assignee = { id: { eq: args.assigneeId } };
+      }
+      
+      if (args.projectId) {
+        filter.project = { id: { eq: args.projectId } };
+      }
+      
+      // Handle state filtering
+      if (args.states && args.states.length > 0) {
+        // First, get all workflow states to map names to IDs if needed
+        let stateIds: string[] = [];
+        
+        if (args.teamId) {
+          // If we have a teamId, get workflow states for that team
+          const workflowStates = await this.getWorkflowStates(args.teamId);
+          
+          // Map state names to IDs
+          for (const stateName of args.states) {
+            const matchingState = workflowStates.find(
+              state => state.name.toLowerCase() === stateName.toLowerCase()
+            );
+            
+            if (matchingState) {
+              stateIds.push(matchingState.id);
+            }
+          }
+        } else {
+          // If no teamId, we need to get all teams and their workflow states
+          const teams = await this.getTeams();
+          
+          for (const team of teams) {
+            const workflowStates = await this.getWorkflowStates(team.id);
+            
+            // Map state names to IDs
+            for (const stateName of args.states) {
+              const matchingState = workflowStates.find(
+                state => state.name.toLowerCase() === stateName.toLowerCase()
+              );
+              
+              if (matchingState) {
+                stateIds.push(matchingState.id);
+              }
+            }
+          }
+        }
+        
+        // If we found matching state IDs, filter by them
+        if (stateIds.length > 0) {
+          filter.state = { id: { in: stateIds } };
+        }
+      }
+      
+      // Handle text search
+      let searchFilter = filter;
+      if (args.query) {
+        searchFilter = {
+          ...filter,
+          or: [
+            { title: { contains: args.query } },
+            { description: { contains: args.query } }
+          ]
+        };
+      }
+      
+      // Execute the search
+      const issues = await this.client.issues({
+        first: args.limit || 10,
+        filter: searchFilter
+      });
+      
+      // Process the results
+      return Promise.all(issues.nodes.map(async issue => {
+        // For relations, we need to fetch the objects
+        const teamData = issue.team ? await issue.team : null;
+        const assigneeData = issue.assignee ? await issue.assignee : null;
+        const projectData = issue.project ? await issue.project : null;
+        const cycleData = issue.cycle ? await issue.cycle : null;
+        const parentData = issue.parent ? await issue.parent : null;
+        
+        // Get labels
+        const labels = await issue.labels();
+        const labelsList = labels.nodes.map(label => ({
+          id: label.id,
+          name: label.name,
+          color: label.color
+        }));
+        
+        // Get state data
+        const stateData = issue.state ? await issue.state : null;
+        
+        return {
+          id: issue.id,
+          title: issue.title,
+          description: issue.description,
+          state: stateData ? {
+            id: stateData.id,
+            name: stateData.name,
+            color: stateData.color,
+            type: stateData.type
+          } : null,
+          priority: issue.priority,
+          estimate: issue.estimate,
+          dueDate: issue.dueDate,
+          team: teamData ? {
+            id: teamData.id,
+            name: teamData.name
+          } : null,
+          assignee: assigneeData ? {
+            id: assigneeData.id,
+            name: assigneeData.name
+          } : null,
+          project: projectData ? {
+            id: projectData.id,
+            name: projectData.name
+          } : null,
+          cycle: cycleData ? {
+            id: cycleData.id,
+            name: cycleData.name
+          } : null,
+          parent: parentData ? {
+            id: parentData.id,
+            title: parentData.title
+          } : null,
+          labels: labelsList,
+          sortOrder: issue.sortOrder,
+          createdAt: issue.createdAt,
+          updatedAt: issue.updatedAt,
+          url: issue.url
+        };
       }));
-      
-      return {
-        id: issue.id,
-        title: issue.title,
-        description: issue.description,
-        state: issue.state,
-        priority: issue.priority,
-        estimate: issue.estimate,
-        dueDate: issue.dueDate,
-        team: teamData ? {
-          id: teamData.id,
-          name: teamData.name
-        } : null,
-        assignee: assigneeData ? {
-          id: assigneeData.id,
-          name: assigneeData.name
-        } : null,
-        project: projectData ? {
-          id: projectData.id,
-          name: projectData.name
-        } : null,
-        cycle: cycleData ? {
-          id: cycleData.id,
-          name: cycleData.name
-        } : null,
-        parent: parentData ? {
-          id: parentData.id,
-          title: parentData.title
-        } : null,
-        labels: labelsList,
-        sortOrder: issue.sortOrder,
-        createdAt: issue.createdAt,
-        updatedAt: issue.updatedAt,
-        url: issue.url
-      };
-    }));
+    } catch (error) {
+      console.error("Error searching issues:", error);
+      throw error;
+    }
   }
   
   async createIssue(args: {
