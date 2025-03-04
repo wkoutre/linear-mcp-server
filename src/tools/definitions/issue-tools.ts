@@ -25,9 +25,28 @@ export const getIssuesToolDefinition: MCPToolDefinition = {
         title: { type: "string" },
         description: { type: "string" },
         state: { type: "string" },
+        priority: { type: "number" },
+        estimate: { type: "number" },
+        dueDate: { type: "string" },
         team: { type: "object" },
         assignee: { type: "object" },
         project: { type: "object" },
+        cycle: { type: "object" },
+        parent: { type: "object" },
+        labels: { 
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string" },
+              name: { type: "string" },
+              color: { type: "string" }
+            }
+          }
+        },
+        sortOrder: { type: "number" },
+        createdAt: { type: "string" },
+        updatedAt: { type: "string" },
         url: { type: "string" }
       }
     }
@@ -58,9 +77,28 @@ export const getIssueByIdToolDefinition: MCPToolDefinition = {
       title: { type: "string" },
       description: { type: "string" },
       state: { type: "string" },
+      priority: { type: "number" },
+      estimate: { type: "number" },
+      dueDate: { type: "string" },
       team: { type: "object" },
       assignee: { type: "object" },
       project: { type: "object" },
+      cycle: { type: "object" },
+      parent: { type: "object" },
+      labels: { 
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            name: { type: "string" },
+            color: { type: "string" }
+          }
+        }
+      },
+      sortOrder: { type: "number" },
+      createdAt: { type: "string" },
+      updatedAt: { type: "string" },
       url: { type: "string" },
       comments: { type: "array" }
     }
@@ -114,9 +152,28 @@ export const searchIssuesToolDefinition: MCPToolDefinition = {
         title: { type: "string" },
         description: { type: "string" },
         state: { type: "string" },
+        priority: { type: "number" },
+        estimate: { type: "number" },
+        dueDate: { type: "string" },
         team: { type: "object" },
         assignee: { type: "object" },
         project: { type: "object" },
+        cycle: { type: "object" },
+        parent: { type: "object" },
+        labels: { 
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: { type: "string" },
+              name: { type: "string" },
+              color: { type: "string" }
+            }
+          }
+        },
+        sortOrder: { type: "number" },
+        createdAt: { type: "string" },
+        updatedAt: { type: "string" },
         url: { type: "string" }
       }
     }
@@ -155,6 +212,44 @@ export const createIssueToolDefinition: MCPToolDefinition = {
       projectId: {
         type: "string",
         description: "ID of the project the issue belongs to",
+      },
+      cycleId: {
+        type: "string",
+        description: "ID of the cycle to add the issue to",
+      },
+      estimate: {
+        type: "number",
+        description: "The estimated complexity/points for the issue",
+      },
+      dueDate: {
+        type: "string",
+        description: "The date at which the issue is due (YYYY-MM-DD format)",
+      },
+      labelIds: {
+        type: "array",
+        items: { type: "string" },
+        description: "IDs of the labels to attach to the issue",
+      },
+      parentId: {
+        type: "string",
+        description: "ID of the parent issue (to create as a sub-task)",
+      },
+      subscriberIds: {
+        type: "array",
+        items: { type: "string" },
+        description: "IDs of the users to subscribe to the issue",
+      },
+      stateId: {
+        type: "string",
+        description: "ID of the workflow state for the issue",
+      },
+      templateId: {
+        type: "string",
+        description: "ID of a template to use for creating the issue",
+      },
+      sortOrder: {
+        type: "number",
+        description: "The position of the issue in relation to other issues",
       },
     },
     required: ["title", "teamId"],
@@ -206,6 +301,50 @@ export const updateIssueToolDefinition: MCPToolDefinition = {
       assigneeId: {
         type: "string",
         description: "ID of the user to assign the issue to, or null to unassign",
+      },
+      cycleId: {
+        type: "string",
+        description: "ID of the cycle to move the issue to, or null to remove from current cycle",
+      },
+      estimate: {
+        type: "number",
+        description: "The estimated complexity/points for the issue",
+      },
+      dueDate: {
+        type: "string",
+        description: "The new due date for the issue (YYYY-MM-DD format), or null to remove",
+      },
+      labelIds: {
+        type: "array",
+        items: { type: "string" },
+        description: "IDs of the labels to set on the issue (replacing existing labels)",
+      },
+      addedLabelIds: {
+        type: "array",
+        items: { type: "string" },
+        description: "IDs of labels to add to the issue (without removing existing ones)",
+      },
+      removedLabelIds: {
+        type: "array",
+        items: { type: "string" },
+        description: "IDs of labels to remove from the issue",
+      },
+      parentId: {
+        type: "string",
+        description: "ID of the parent issue, or null to convert to a regular issue",
+      },
+      subscriberIds: {
+        type: "array",
+        items: { type: "string" },
+        description: "IDs of the users to subscribe to the issue (replacing existing subscribers)",
+      },
+      teamId: {
+        type: "string",
+        description: "ID of the team to move the issue to",
+      },
+      sortOrder: {
+        type: "number",
+        description: "The position of the issue in relation to other issues",
       },
     },
     required: ["id"],
