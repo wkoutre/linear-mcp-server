@@ -54,6 +54,15 @@ export function isCreateIssueArgs(args: unknown): args is {
   assigneeId?: string;
   priority?: number;
   projectId?: string;
+  cycleId?: string;
+  estimate?: number;
+  dueDate?: string;
+  labelIds?: string[];
+  parentId?: string;
+  subscriberIds?: string[];
+  stateId?: string;
+  templateId?: string;
+  sortOrder?: number;
 } {
   return (
     typeof args === "object" &&
@@ -61,7 +70,19 @@ export function isCreateIssueArgs(args: unknown): args is {
     "title" in args &&
     typeof (args as { title: string }).title === "string" &&
     "teamId" in args &&
-    typeof (args as { teamId: string }).teamId === "string"
+    typeof (args as { teamId: string }).teamId === "string" &&
+    (!("assigneeId" in args) || typeof (args as { assigneeId: string }).assigneeId === "string") &&
+    (!("priority" in args) || typeof (args as { priority: number }).priority === "number") &&
+    (!("projectId" in args) || typeof (args as { projectId: string }).projectId === "string") &&
+    (!("cycleId" in args) || typeof (args as { cycleId: string }).cycleId === "string") &&
+    (!("estimate" in args) || typeof (args as { estimate: number }).estimate === "number") &&
+    (!("dueDate" in args) || typeof (args as { dueDate: string }).dueDate === "string") &&
+    (!("labelIds" in args) || Array.isArray((args as { labelIds: string[] }).labelIds)) &&
+    (!("parentId" in args) || typeof (args as { parentId: string }).parentId === "string") &&
+    (!("subscriberIds" in args) || Array.isArray((args as { subscriberIds: string[] }).subscriberIds)) &&
+    (!("stateId" in args) || typeof (args as { stateId: string }).stateId === "string") &&
+    (!("templateId" in args) || typeof (args as { templateId: string }).templateId === "string") &&
+    (!("sortOrder" in args) || typeof (args as { sortOrder: number }).sortOrder === "number")
   );
 }
 
@@ -76,12 +97,38 @@ export function isUpdateIssueArgs(args: unknown): args is {
   priority?: number;
   projectId?: string;
   assigneeId?: string;
+  cycleId?: string;
+  estimate?: number;
+  dueDate?: string;
+  labelIds?: string[];
+  addedLabelIds?: string[];
+  removedLabelIds?: string[];
+  parentId?: string;
+  subscriberIds?: string[];
+  teamId?: string;
+  sortOrder?: number;
 } {
   return (
     typeof args === "object" &&
     args !== null &&
     "id" in args &&
-    typeof (args as { id: string }).id === "string"
+    typeof (args as { id: string }).id === "string" &&
+    (!("title" in args) || typeof (args as { title: string }).title === "string") &&
+    (!("description" in args) || typeof (args as { description: string }).description === "string") &&
+    (!("stateId" in args) || typeof (args as { stateId: string }).stateId === "string") &&
+    (!("priority" in args) || typeof (args as { priority: number }).priority === "number") &&
+    (!("projectId" in args) || typeof (args as { projectId: string }).projectId === "string") &&
+    (!("assigneeId" in args) || typeof (args as { assigneeId: string }).assigneeId === "string") &&
+    (!("cycleId" in args) || typeof (args as { cycleId: string }).cycleId === "string") &&
+    (!("estimate" in args) || typeof (args as { estimate: number }).estimate === "number") &&
+    (!("dueDate" in args) || typeof (args as { dueDate: string }).dueDate === "string") &&
+    (!("labelIds" in args) || Array.isArray((args as { labelIds: string[] }).labelIds)) &&
+    (!("addedLabelIds" in args) || Array.isArray((args as { addedLabelIds: string[] }).addedLabelIds)) &&
+    (!("removedLabelIds" in args) || Array.isArray((args as { removedLabelIds: string[] }).removedLabelIds)) &&
+    (!("parentId" in args) || typeof (args as { parentId: string }).parentId === "string") &&
+    (!("subscriberIds" in args) || Array.isArray((args as { subscriberIds: string[] }).subscriberIds)) &&
+    (!("teamId" in args) || typeof (args as { teamId: string }).teamId === "string") &&
+    (!("sortOrder" in args) || typeof (args as { sortOrder: number }).sortOrder === "number")
   );
 }
 

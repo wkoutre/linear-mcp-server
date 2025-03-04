@@ -97,6 +97,16 @@ export class LinearService {
       const teamData = issue.team ? await issue.team : null;
       const assigneeData = issue.assignee ? await issue.assignee : null;
       const projectData = issue.project ? await issue.project : null;
+      const cycleData = issue.cycle ? await issue.cycle : null;
+      const parentData = issue.parent ? await issue.parent : null;
+      
+      // Get labels
+      const labels = await issue.labels();
+      const labelsList = labels.nodes.map(label => ({
+        id: label.id,
+        name: label.name,
+        color: label.color
+      }));
       
       return {
         id: issue.id,
@@ -104,6 +114,8 @@ export class LinearService {
         description: issue.description,
         state: issue.state,
         priority: issue.priority,
+        estimate: issue.estimate,
+        dueDate: issue.dueDate,
         team: teamData ? {
           id: teamData.id,
           name: teamData.name
@@ -116,7 +128,19 @@ export class LinearService {
           id: projectData.id,
           name: projectData.name
         } : null,
-        createdAt: issue.createdAt
+        cycle: cycleData ? {
+          id: cycleData.id,
+          name: cycleData.name
+        } : null,
+        parent: parentData ? {
+          id: parentData.id,
+          title: parentData.title
+        } : null,
+        labels: labelsList,
+        sortOrder: issue.sortOrder,
+        createdAt: issue.createdAt,
+        updatedAt: issue.updatedAt,
+        url: issue.url
       };
     }));
   }
@@ -132,6 +156,8 @@ export class LinearService {
     const teamData = issue.team ? await issue.team : null;
     const assigneeData = issue.assignee ? await issue.assignee : null;
     const projectData = issue.project ? await issue.project : null;
+    const cycleData = issue.cycle ? await issue.cycle : null;
+    const parentData = issue.parent ? await issue.parent : null;
     
     // Get comments
     const comments = await issue.comments();
@@ -149,12 +175,22 @@ export class LinearService {
       };
     }));
     
+    // Get labels
+    const labels = await issue.labels();
+    const labelsList = labels.nodes.map(label => ({
+      id: label.id,
+      name: label.name,
+      color: label.color
+    }));
+    
     return {
       id: issue.id,
       title: issue.title,
       description: issue.description,
       state: issue.state,
       priority: issue.priority,
+      estimate: issue.estimate,
+      dueDate: issue.dueDate,
       team: teamData ? {
         id: teamData.id,
         name: teamData.name
@@ -167,6 +203,16 @@ export class LinearService {
         id: projectData.id,
         name: projectData.name
       } : null,
+      cycle: cycleData ? {
+        id: cycleData.id,
+        name: cycleData.name
+      } : null,
+      parent: parentData ? {
+        id: parentData.id,
+        title: parentData.title
+      } : null,
+      labels: labelsList,
+      sortOrder: issue.sortOrder,
       createdAt: issue.createdAt,
       updatedAt: issue.updatedAt,
       url: issue.url,
@@ -214,6 +260,16 @@ export class LinearService {
       const teamData = issue.team ? await issue.team : null;
       const assigneeData = issue.assignee ? await issue.assignee : null;
       const projectData = issue.project ? await issue.project : null;
+      const cycleData = issue.cycle ? await issue.cycle : null;
+      const parentData = issue.parent ? await issue.parent : null;
+      
+      // Get labels
+      const labels = await issue.labels();
+      const labelsList = labels.nodes.map(label => ({
+        id: label.id,
+        name: label.name,
+        color: label.color
+      }));
       
       return {
         id: issue.id,
@@ -221,6 +277,8 @@ export class LinearService {
         description: issue.description,
         state: issue.state,
         priority: issue.priority,
+        estimate: issue.estimate,
+        dueDate: issue.dueDate,
         team: teamData ? {
           id: teamData.id,
           name: teamData.name
@@ -233,7 +291,19 @@ export class LinearService {
           id: projectData.id,
           name: projectData.name
         } : null,
-        createdAt: issue.createdAt
+        cycle: cycleData ? {
+          id: cycleData.id,
+          name: cycleData.name
+        } : null,
+        parent: parentData ? {
+          id: parentData.id,
+          title: parentData.title
+        } : null,
+        labels: labelsList,
+        sortOrder: issue.sortOrder,
+        createdAt: issue.createdAt,
+        updatedAt: issue.updatedAt,
+        url: issue.url
       };
     }));
   }
@@ -245,8 +315,33 @@ export class LinearService {
     assigneeId?: string;
     priority?: number;
     projectId?: string;
+    cycleId?: string;
+    estimate?: number;
+    dueDate?: string;
+    labelIds?: string[];
+    parentId?: string;
+    subscriberIds?: string[];
+    stateId?: string;
+    templateId?: string;
+    sortOrder?: number;
   }) {
-    const createdIssue = await this.client.createIssue(args);
+    const createdIssue = await this.client.createIssue({
+      title: args.title,
+      description: args.description,
+      teamId: args.teamId,
+      assigneeId: args.assigneeId,
+      priority: args.priority,
+      projectId: args.projectId,
+      cycleId: args.cycleId,
+      estimate: args.estimate,
+      dueDate: args.dueDate,
+      labelIds: args.labelIds,
+      parentId: args.parentId,
+      subscriberIds: args.subscriberIds,
+      stateId: args.stateId,
+      templateId: args.templateId,
+      sortOrder: args.sortOrder
+    });
     
     // Access the issue from the payload
     if (createdIssue.success && createdIssue.issue) {
@@ -270,6 +365,16 @@ export class LinearService {
     priority?: number;
     projectId?: string;
     assigneeId?: string;
+    cycleId?: string;
+    estimate?: number;
+    dueDate?: string;
+    labelIds?: string[];
+    addedLabelIds?: string[];
+    removedLabelIds?: string[];
+    parentId?: string;
+    subscriberIds?: string[];
+    teamId?: string;
+    sortOrder?: number;
   }) {
     const updatedIssue = await this.client.updateIssue(args.id, {
       title: args.title,
@@ -277,7 +382,17 @@ export class LinearService {
       stateId: args.stateId,
       priority: args.priority,
       projectId: args.projectId,
-      assigneeId: args.assigneeId
+      assigneeId: args.assigneeId,
+      cycleId: args.cycleId,
+      estimate: args.estimate,
+      dueDate: args.dueDate,
+      labelIds: args.labelIds,
+      addedLabelIds: args.addedLabelIds,
+      removedLabelIds: args.removedLabelIds,
+      parentId: args.parentId,
+      subscriberIds: args.subscriberIds,
+      teamId: args.teamId,
+      sortOrder: args.sortOrder
     });
     
     if (updatedIssue.success && updatedIssue.issue) {
