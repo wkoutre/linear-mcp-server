@@ -1,11 +1,12 @@
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
   Tool,
-} from "@modelcontextprotocol/sdk/types.js";
-import { MCPToolDefinition } from "./types.js";
+} from '@modelcontextprotocol/sdk/types.js';
+import { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
+import { MCPToolDefinition } from './types.js';
 
 /**
  * Interface for the MCP server handler functions
@@ -22,6 +23,7 @@ export interface MCPServerConfig {
   tools: MCPToolDefinition[];
   handleInitialize: () => Promise<{ tools: MCPToolDefinition[] }>;
   handleRequest: (req: { name: string; args: unknown }) => Promise<unknown>;
+  transport?: Transport; // Optional transport (defaults to stdio if not provided)
 }
 
 /**
@@ -32,9 +34,9 @@ function convertToolDefinition(toolDef: MCPToolDefinition): Tool {
     name: toolDef.name,
     description: toolDef.description,
     inputSchema: {
-      type: "object", 
+      type: 'object',
       properties: toolDef.input_schema.properties,
-      ...(toolDef.input_schema.required ? { required: toolDef.input_schema.required } : {})
+      ...(toolDef.input_schema.required ? { required: toolDef.input_schema.required } : {}),
     },
   };
 }
@@ -45,14 +47,14 @@ function convertToolDefinition(toolDef: MCPToolDefinition): Tool {
 export async function runMCPServer(config: MCPServerConfig) {
   const server = new Server(
     {
-      name: "linear-mcp-server",
-      version: "1.0.0",
+      name: 'linear-mcp-server',
+      version: '1.0.0',
     },
     {
       capabilities: {
         tools: {},
       },
-    }
+    },
   );
 
   // Convert our tool definitions to the SDK format
@@ -69,22 +71,22 @@ export async function runMCPServer(config: MCPServerConfig) {
       const { name, arguments: args } = request.params;
 
       if (!args) {
-        throw new Error("No arguments provided");
+        throw new Error('No arguments provided');
       }
 
       // Call the handler
       const result = await config.handleRequest({ name, args });
 
       return {
-        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
         isError: false,
       };
     } catch (error) {
-      console.error("Error in tool handler:", error);
+      console.error('Error in tool handler:', error);
       return {
         content: [
           {
-            type: "text",
+            type: 'text',
             text: `Error: ${error instanceof Error ? error.message : String(error)}`,
           },
         ],
@@ -93,9 +95,9 @@ export async function runMCPServer(config: MCPServerConfig) {
     }
   });
 
-  // Connect the server to stdio
-  const transport = new StdioServerTransport();
+  // Connect the server to the provided transport or use stdio as default
+  const transport = config.transport || new StdioServerTransport();
   await server.connect(transport);
 
   return server;
-} 
+}
